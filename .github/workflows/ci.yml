@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:7
+        ports: ["27017:27017"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # Tests start their own throwaway redis-server instances.
+      - name: Install Redis
+        run: sudo apt-get update && sudo apt-get install -y redis-server
+
+      - name: SDK tests
+        working-directory: sdk
+        run: npm ci && npm test
+
+      - name: Server tests (incl. MongoDB integration)
+        working-directory: server
+        env:
+          TEST_MONGO_URL: mongodb://localhost:27017/pulse_test
+        run: npm ci && npm test
+
+      - name: Dashboard tests and build
+        working-directory: dashboard
+        run: npm ci && npm test && npm run build

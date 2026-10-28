@@ -1,0 +1,20 @@
+{
+  "name": "pulse-sdk",
+  "version": "0.1.0",
+  "description": "Drop-in Express middleware that sends request metrics, errors and logs to a Pulse server",
+  "main": "src/index.js",
+  "files": ["src"],
+  "scripts": {
+    "test": "jest --runInBand"
+  },
+  "keywords": ["observability", "monitoring", "express", "apm"],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "express": "^4.21.2",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  }
+}
